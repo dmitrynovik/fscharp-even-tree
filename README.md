@@ -20,19 +20,20 @@ Print the number of removed edges.
 
 ## Sample Input
 
-10 9
-2 1
-3 1
-4 3
-5 2
-6 1
-7 2
-8 6
-9 8
-10 8
+10 9 <br />
+2 1 <br />
+3 1 <br />
+4 3 <br />
+5 2 <br />
+6 1 <br />
+7 2 <br />
+8 6 <br />
+9 8 <br />
+10 8 <br />
+
 ## Sample Output
 
 2
 ## Explanation
 
-On removing edges (1,3)  and (1, 6) , we can get the desired result.
+On removing edges (1,3)  and (1, 6), we can get the desired result.

@@ -1,4 +1,4 @@
-﻿namespace FSharp.EvenTree.AssemblyInfo
+﻿module FSharp.EvenTree
 
 open System.Reflection
 open System.Runtime.CompilerServices

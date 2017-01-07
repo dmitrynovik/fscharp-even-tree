@@ -40,7 +40,11 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
 
     member this.neighborsOf(n: Node) = 
         let nEdges = List.filter (fun e -> e.v1 = n || e.v2 = n) edges
-        seq { for e in nEdges do if e.v1 = n then yield e.v2 else yield e.v1 }
+        seq { 
+            for e in nEdges do                 
+                if e.v1 = n && e.v2 > n then yield e.v2 
+                elif e.v1 > n then yield e.v1 
+        }
         
     member this.subTree(root: Node):Graph = 
         let neighbors = this.neighborsOf root
@@ -53,17 +57,19 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
             g
 
     member this.maxEvenDepth() =
-        let root = List.min nodes
-        let neighbors = this.neighborsOf root
-        let mutable count = 0
-        for n in neighbors do
-            let subTree = this.subTree n
-            if subTree.Nodes.Length % 2 = 0 then count <- count + subTree.maxEvenDepth() + 1
-        count
+        if Seq.isEmpty nodes then 0
+        else
+            let root = List.min nodes
+            let neighbors = this.neighborsOf root
+            let mutable count = 0
+            for n in neighbors do
+                let subTree = this.subTree n
+                if (subTree.Nodes.Length > 0) && (subTree.Nodes.Length % 2 = 0) then count <- count + subTree.maxEvenDepth() + 1
+            count
 
     static member parseFromStdin():Graph = Graph.parse System.Console.ReadLine
 
-    static member parse(readLineFunc: unit -> string):Graph = 
+    static member parse(nextLine: unit -> string):Graph = 
 
         let mutable graph = Graph(List.Empty, List.Empty)
 
@@ -71,13 +77,13 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
         let lines = seq { 
             let mutable hasMore = true
             while hasMore do
-                let line = readLineFunc()
+                let line = nextLine()
                 if line <> null then yield line
                 else hasMore <- false
         }
 
         for line in Seq.skip 1 lines do // skip 1st line as irrelevant
-            let nodes = (line.Split ' ') |> Seq.map Graph.ParseNode |> Seq.toArray
+            let nodes = (line.Trim().Split ' ') |> Seq.map Graph.ParseNode |> Seq.toArray
             graph <- graph.addEdge { v1 = nodes.[0]; v2 = nodes.[1] }
             
         graph

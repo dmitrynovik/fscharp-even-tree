@@ -64,7 +64,6 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
     static member parseFromStdin():Graph = Graph.parse System.Console.ReadLine
 
     static member parse(nextLine: unit -> string):Graph = 
-
         let mutable graph = Graph(List.Empty, List.Empty)
 
         let lines = seq { // lines lazy sequence ...

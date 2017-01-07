@@ -7,7 +7,7 @@ type Edge = { v1: Node; v2: Node } with
     override this.GetHashCode() = this.v1.GetHashCode() ^^^ this.v2.GetHashCode()
     override this.Equals(obj) = 
         match obj with
-            | :? Edge as e -> (e.v1 = this.v1 && e.v2 = this.v2) || (e.v1 = this.v2 && e.v2 = this.v1)
+            | :? Edge as e -> e.v1 = this.v1 && e.v2 = this.v2 || e.v1 = this.v2 && e.v2 = this.v1
             | _ -> false
 
 // Immutable Graph type (each modification produces new graph):
@@ -34,11 +34,7 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
 
     member this.neighborsOf(n: Node) = 
         let nEdges = List.filter (fun e -> e.v1 = n || e.v2 = n) edges
-        seq { 
-            for e in nEdges do                 
-                if e.v1 = n && e.v2 > n then yield e.v2 
-                elif e.v1 > n then yield e.v1 
-        }
+        seq { for e in nEdges do if e.v1 = n && e.v2 > n then yield e.v2 elif e.v1 > n then yield e.v1 }
         
     member this.subTree(root: Node):Graph = 
         let neighbors = this.neighborsOf root

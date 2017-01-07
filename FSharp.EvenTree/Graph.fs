@@ -67,7 +67,7 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
 
         let mutable graph = Graph(List.Empty, List.Empty)
 
-        let lines = seq { 
+        let lines = seq { // lines lazy sequence ...
             let mutable hasMore = true
             while hasMore do
                 let line = nextLine()

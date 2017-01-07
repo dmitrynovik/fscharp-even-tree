@@ -32,12 +32,12 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
         let edges = Seq.append edges other.Edges |> Seq.distinct |> Seq.toList
         Graph(nodes, edges)
 
-    member this.neighborsOf(n: Node) = 
+    member this.descendantsOf(n: Node) = 
         let nEdges = List.filter (fun e -> e.v1 = n || e.v2 = n) edges
         seq { for e in nEdges do if e.v1 = n && e.v2 > n then yield e.v2 elif e.v1 > n then yield e.v1 }
         
     member this.subTree(root: Node):Graph = 
-        let neighbors = this.neighborsOf root
+        let neighbors = this.descendantsOf root
         let mutable g = Graph(List.Empty, List.Empty)
         if Seq.isEmpty neighbors then g
         else 
@@ -50,7 +50,7 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
         if Seq.isEmpty nodes then 0
         else
             let root = List.min nodes
-            let neighbors = this.neighborsOf root
+            let neighbors = this.descendantsOf root
             let mutable count = 0
             for n in neighbors do
                 let subTree = this.subTree n

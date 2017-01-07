@@ -59,9 +59,9 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
             if subTree.NodeCount % 2 = 0 then count <- count + subTree.maxEvenDepth() + 1
         count
 
-    member this.parseFromStdin() = this.Parse System.Console.ReadLine
+    member this.parseFromStdin() = this.parse System.Console.ReadLine
 
-    member this.Parse(readLineFunc: unit -> string):Graph = 
+    member this.parse(readLineFunc: unit -> string):Graph = 
 
         let mutable graph = Graph(List.Empty, List.Empty)
 

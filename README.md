@@ -1,4 +1,6 @@
 # fscharp-even-tree
+
+This is a F# solution to hackerrank problem at:
 https://www.hackerrank.com/challenges/even-tree
 
 You are given a tree (a simple connected graph with no cycles). The tree has  nodes numbered from  to  and is rooted at node .

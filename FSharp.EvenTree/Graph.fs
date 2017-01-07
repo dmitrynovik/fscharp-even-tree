@@ -4,21 +4,15 @@ type Node = int
     
 [<CustomEquality; NoComparison>]
 type Edge = { v1: Node; v2: Node } with
-
     override this.GetHashCode() = this.v1.GetHashCode() ^^^ this.v2.GetHashCode()
-
     override this.Equals(obj) = 
         match obj with
             | :? Edge as e -> (e.v1 = this.v1 && e.v2 = this.v2) || (e.v1 = this.v2 && e.v2 = this.v1)
             | _ -> false
 
-//
 // Immutable Graph type (each modification produces new graph):
-//
 type Graph(nodes: List<Node>, edges: List<Edge>) =
-
     static member ParseNode(sNode: string) = System.Int32.Parse sNode
-
     member this.Nodes = nodes
     member this.Edges = edges
 
@@ -64,7 +58,11 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
             let mutable count = 0
             for n in neighbors do
                 let subTree = this.subTree n
-                if (subTree.Nodes.Length > 0) && (subTree.Nodes.Length % 2 = 0) then count <- count + subTree.maxEvenDepth() + 1
+                let nodeCount = subTree.Nodes.Length
+                if nodeCount < 2 then count <- count
+                elif nodeCount = 2 then count <- count + 1
+                elif nodeCount % 2 = 0 then count <- count + subTree.maxEvenDepth() + 1
+                else count <- count + subTree.maxEvenDepth()
             count
 
     static member parseFromStdin():Graph = Graph.parse System.Console.ReadLine
@@ -73,7 +71,6 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
 
         let mutable graph = Graph(List.Empty, List.Empty)
 
-        // Lines lazy sequence:
         let lines = seq { 
             let mutable hasMore = true
             while hasMore do

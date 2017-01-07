@@ -4,11 +4,14 @@ type Node = int
     
 [<CustomEquality; NoComparison>]
 type Edge = { v1: Node; v2: Node } with
+
     override this.GetHashCode() = this.v1.GetHashCode() ^^^ this.v2.GetHashCode()
+
     override this.Equals(obj) = 
         match obj with
             | :? Edge as e -> (e.v1 = this.v1 && e.v2 = this.v2) || (e.v1 = this.v2 && e.v2 = this.v1)
             | _ -> false
+
 //
 // Immutable Graph type (each modification produces new graph):
 //
@@ -50,7 +53,7 @@ type Graph(nodes: List<Node>, edges: List<Edge>) =
                 g <- g.Union(nTree).AddEdge({v1 = root; v2 = n})        
             g
 
-    member this.maxEvenDepth():int =
+    member this.maxEvenDepth() =
         let root = List.min nodes
         let neighbors = this.NeigborsOf root
         let mutable count = 0
